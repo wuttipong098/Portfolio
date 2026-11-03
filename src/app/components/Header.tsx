@@ -2,21 +2,42 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WK from "@/public/WK.png";
 
 const Header = () => {
-  const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState("home");
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   const links = [
-    { href: "/WK-Website/main", label: "Home" },
-    { href: "/WK-Website/project", label: "My Project" },
-    { href: "/WK-Website/portfolio", label: "Portfolio" },
-    { href: "/WK-Website/education", label: "Education" },
-    { href: "/WK-Website/contact", label: "Contact" },
+    { href: "#home", label: "Home" },
+    { href: "#project", label: "My Project" },
+    { href: "#portfolio", label: "Portfolio" },
+    { href: "#education", label: "Education" },
+    { href: "#contact", label: "Contact" },
   ];
+
+  // ใช้ IntersectionObserver ตรวจจับว่าตอนนี้อยู่ Section ไหน
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = links.map((link) => link.href.substring(1));
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      for (const sectionId of sections) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(sectionId);
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full px-6 py-4 flex items-center justify-between bg-transparent">
@@ -36,19 +57,16 @@ const Header = () => {
 
       <nav
         onMouseLeave={() => setHoveredLink(null)}
-        className="flex items-center gap-1 bg-white/10 backdrop-blur-xl rounded-full px-2 py-1.5 border border-white/25 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+        className="flex items-center gap-1 bg-white/15 backdrop-blur-xl rounded-full px-2 py-1.5 border border-white/25 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
       >
         {links.map((link) => {
-          const isActive =
-            pathname === link.href || pathname.startsWith(link.href);
-
+          const sectionId = link.href.substring(1);
+          const isActive = activeSection === sectionId;
           const isHovered = hoveredLink === link.href;
-          const isSelected = hoveredLink
-            ? isHovered
-            : isActive;
+          const isSelected = hoveredLink ? isHovered : isActive;
 
           return (
-            <Link
+            <a
               key={link.href}
               href={link.href}
               onMouseEnter={() => setHoveredLink(link.href)}
@@ -61,7 +79,7 @@ const Header = () => {
               `}
             >
               {link.label}
-            </Link>
+            </a>
           );
         })}
       </nav>
