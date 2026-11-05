@@ -2,7 +2,6 @@
 
 import Header from "@/app/components/Header"; 
 
-// Import ทั้ง 5 หน้า
 import MainPage from "@/app/WK-Website/main/page";
 import PJPage from "@/app/WK-Website/project/page";
 import PFPage from "@/app/WK-Website/portfolio/page";
@@ -11,13 +10,11 @@ import CTPage from "@/app/WK-Website/contact/page";
 
 export default function Home() {
   return (
-    // เพิ่ม scroll-smooth ตรงนี้เพื่อให้เวลาคลิก Header แล้วหน้าจอเลื่อนสมูทๆ
     <main className="relative w-full overflow-x-hidden scroll-smooth">
-      {/* แสดง Header ไว้ด้านบนสุด */}
       <Header />
 
-      {/* 1. Home / หน้าหลัก */}
-      <section id="home" className="h-screen w-full">
+      {/* 1. Home / หน้าหลัก - เอา h-screen ออก */}
+      <section id="home" className="w-full">
         <MainPage />
       </section>
 
