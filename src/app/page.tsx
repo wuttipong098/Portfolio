@@ -34,7 +34,7 @@ export default function Home() {
       </section>
 
       {/* 5. Contact */}
-      <section id="contact" className="h-screen w-full">
+      <section id="contact" className=" w-full">
         <CTPage />
       </section>
     </main>
