@@ -39,7 +39,7 @@ const MainPage = () => {
             <p className={styles.subtitle}>Full-Stack Developer</p>
             <p className={styles.description}>
               Welcome to my portfolio. Feel free to explore my projects, skills,
-              education, and experience. Keep scrolling!
+              education, and experience. You can scroll through to view the content or select a specific section!
             </p>
           </div>
         </div>
