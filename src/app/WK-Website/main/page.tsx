@@ -2,19 +2,15 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import profile from "@/public/profile.png";
 import profile1 from "@/public/profile1.png";
 import มพ from "@/public/มพ.webp";
 import styles from "@/styles/main.module.css";
 
 const MainPage = () => {
-  const router = useRouter();
-
   const sequence = [0, 1, 0];
   const [stepIndex, setStepIndex] = useState(0);
-  const homeRef = useRef(null);
+  const homeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -115,7 +111,7 @@ const MainPage = () => {
             </h2>
 
             <p className={styles.aboutText}>
-              I'm a recent graduate with a strong passion for software development.
+              I&apos;m a recent graduate with a strong passion for software development.
               Through internships and personal projects, I’ve gained experience
               working in teams in a Work From Home environment as a Full-Stack
               Developer — handling both frontend web design and backend development.

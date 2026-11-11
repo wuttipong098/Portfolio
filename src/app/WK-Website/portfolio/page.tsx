@@ -3,7 +3,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { useState, useRef, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import * as THREE from "three";
 import img1 from "@/public/PF/1.png";
 import img2 from "@/public/PF/2.png";
@@ -34,7 +33,6 @@ const images = [
   img21, img22,
 ];
 
-// ฟังก์ชันสร้าง Geometry มุมโค้ง (Rounded Rectangle)
 function createRoundedRectGeometry(width: number, height: number, radius: number) {
   const x = -width / 2;
   const y = -height / 2;
@@ -58,7 +56,7 @@ function ImageCard({
   index,
   activeIndex,
 }: {
-  url: any;
+  url: string | { src: string };
   index: number;
   activeIndex: number;
 }) {
@@ -166,7 +164,6 @@ function Scene({ activeIndex }: { activeIndex: number }) {
 }
 
 const PFPage = () => {
-  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const prev = () => {

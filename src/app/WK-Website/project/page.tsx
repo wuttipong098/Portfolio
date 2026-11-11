@@ -1,13 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import styles from '@/styles/project.module.css';
 
 const PJPage = () => {
-  const router = useRouter();
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   return (
     <div className={`${styles.container} relative h-screen w-full overflow-hidden flex items-center justify-center px-8`}>

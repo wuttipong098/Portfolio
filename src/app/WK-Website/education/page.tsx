@@ -1,11 +1,7 @@
 "use client";
-
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import styles from '@/styles/education.module.css';
 
 const EdPage = () => {
-  const router = useRouter();
 
   return (
     <div className={`${styles.container} relative h-screen w-full overflow-hidden flex items-center justify-center px-8`}>
