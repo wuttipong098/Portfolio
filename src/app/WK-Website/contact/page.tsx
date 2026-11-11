@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import profile from "@/public/profile.png";
+import profile from "@/public/profile1.png";
 import styles from "@/styles/contact.module.css";
 
 const contactItems = [
@@ -60,7 +61,7 @@ const socialLinks = [
   },
   {
     name: "Instagram",
-    href: "#",
+    href: "https://www.instagram.com/ace_wuttipong/",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24">
         <defs>
@@ -84,24 +85,52 @@ const socialLinks = [
     ),
   },
   {
-    name: "Gmail",
-    href: "mailto:acenpwk@gmail.com",
+    name: "GitHub",
+    href: "https://github.com/wuttipong098",
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24">
-        <path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
       </svg>
     ),
   },
 ];
 
 const CTPage = () => {
+  const [isSocialOpen, setIsSocialOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const timer = setTimeout(() => {
+            setIsSocialOpen(true);
+          }, 400);
+
+          return () => clearTimeout(timer);
+        } else {
+          setIsSocialOpen(false);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) observer.unobserve(containerRef.current);
+    };
+  }, []);
+
   return (
-    <div className={`${styles.container} relative w-full px-8 py-16`}>
-      <div className="relative z-10 mx-auto w-full max-w-4xl">
-        
+    <div className={`${styles.container} py-16`}>
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-8">
+
         {/* ===== Section 1: Contact Info ===== */}
         <section className="text-center">
-          <h2 className="text-4xl font-bold text-white md:text-6xl">
+          <h2 className={styles.title}>
             Contact Me
           </h2>
 
@@ -133,8 +162,8 @@ const CTPage = () => {
 
         {/* ===== Section 2: Contact Form ===== */}
         <section id="contact-form" className="mt-20 scroll-mt-24">
-          <div className="mx-auto max-w-xl rounded-2xl border border-white/20 bg-white/5 p-8 backdrop-blur-sm">
-            <h3 className="mb-8 text-center text-3xl font-bold text-white">
+          <div className={styles.formCard}>
+            <h3 className={styles.formTitle}>
               Send a Message
             </h3>
 
@@ -174,47 +203,71 @@ const CTPage = () => {
                 />
               </div>
 
+              {/* เพิ่มคลาส cursor-pointer ตรงปุ่ม Send Message */}
               <button
                 type="submit"
-                className="w-full rounded-full bg-white px-8 py-3.5 font-semibold text-[#8D00AD] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                className="w-full cursor-pointer rounded-full bg-white px-8 py-3.5 font-semibold text-[#8D00AD] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Send Message
               </button>
             </form>
           </div>
         </section>
+      </div>
 
-        {/* ===== Profile + Social (มุมซ้ายล่าง) ===== */}
-        <div className="mt-16 flex items-end gap-0">
-          <div className="relative">
-            <Image
-              src={profile}
-              alt="Wuttipong Krachan"
-              width={180}
-              height={220}
-              className="h-auto w-36 object-cover md:w-44"
-              priority
-            />
+      {/* ===== Profile + Social + Footer (รวมกันชิดซ้ายล่างสุด) ===== */}
+      <div className={styles.profileWrapper} ref={containerRef}>
+        <div className={styles.profileContainer}>
 
-            {/* แถบไอคอน ติดกับรูป */}
-            <div className="absolute bottom-2 left-full -ml-2 flex items-center gap-1 rounded-full bg-white px-2.5 py-1.5 shadow-md">
-              {socialLinks.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  target={item.href.startsWith("http") ? "_blank" : undefined}
-                  rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex h-7 w-7 items-center justify-center rounded-full transition-transform hover:scale-110"
-                  title={item.name}
-                >
-                  {item.icon}
-                </a>
-              ))}
-            </div>
+          {/* Social Bar */}
+          <div
+            className={`${styles.socialBar} ${
+              isSocialOpen
+                ? styles.socialBarOpen
+                : styles.socialBarClosed
+            }`}
+          >
+            {socialLinks.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className={styles.socialIcon}
+                title={item.name}
+                tabIndex={isSocialOpen ? 0 : -1}
+              >
+                {item.icon}
+              </a>
+            ))}
+
+            {/* Toggle Button at the end of Social Bar */}
+            <button
+              type="button"
+              className={styles.socialToggle}
+              onClick={() => setIsSocialOpen((prev) => !prev)}
+              aria-label={isSocialOpen ? "Hide social links" : "Show social links"}
+              aria-expanded={isSocialOpen}
+            >
+              {isSocialOpen ? "‹" : "›"}
+            </button>
+
           </div>
+
+          {/* Profile Image */}
+          <Image
+            src={profile}
+            alt="Wuttipong Krachan"
+            width={180}
+            height={220}
+            className={styles.profileImage}
+            priority
+          />
+
         </div>
 
-        <p className="mt-10 text-center text-sm text-white/60">
+        {/* นำข้อความ Footer มาวางไว้ข้างๆ รูปในระดับเดียวกันแบบ absolute เพื่อไม่ให้ดันโครงสร้างหลัก */}
+        <p className={styles.footer}>
           © {new Date().getFullYear()} Wuttipong Krachan
         </p>
       </div>

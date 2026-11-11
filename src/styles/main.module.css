@@ -6,15 +6,18 @@
 }
 
 .glassBox {
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  height: 350px;
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  position: relative;
 }
-
 
 .mainTitle {
   font-size: 3rem;
@@ -23,22 +26,10 @@
   line-height: 1.1;
 }
 
-@media (min-width: 768px) {
-  .mainTitle {
-    font-size: 4.5rem;
-  }
-}
-
 .subtitle {
   margin-top: 1.25rem;
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.9);
-}
-
-@media (min-width: 768px) {
-  .subtitle {
-    font-size: 1.5rem;
-  }
 }
 
 .description {
@@ -56,12 +47,6 @@
   white-space: nowrap;
 }
 
-@media (min-width: 768px) {
-  .sectionTitle {
-    font-size: 2.25rem;
-  }
-}
-
 .aboutText {
   margin-top: 1.5rem;
   max-width: 36rem;
@@ -72,4 +57,24 @@
 
 .aboutText + .aboutText {
   margin-top: 2rem;
+}
+
+/* รวม @media (min-width: 768px) ไว้ที่เดียวกันด้านล่างสุดเพื่อให้จัดการง่าย */
+@media (min-width: 768px) {
+  .glassBox {
+    width: 400px;
+    height: 400px;
+  }
+
+  .mainTitle {
+    font-size: 4.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 2.25rem;
+  }
 }

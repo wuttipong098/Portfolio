@@ -1,1 +1,200 @@
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-x: hidden;
+  padding-top: 4rem;
+  padding-bottom: 0rem;
+  padding-left: 0;
+  padding-right: 0;
+}
 
+/* คอนเทนต์ส่วนบน (หัวข้อ + ฟอร์ม) */
+.container > div:first-child {
+  width: 100%;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* ===== Profile + Social (ชิดซ้ายล่างสุด) ===== */
+.profileWrapper {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between; /* ช่วยดันให้ Footer ไปอยู่อีกฝั่งได้ถ้าต้องการ หรือจัดตำแหน่งอิสระ */
+}
+
+.profileContainer {
+  position: relative;
+  width: fit-content;
+  isolation: isolate;
+}
+
+.profileImage {
+  position: relative;
+  z-index: 2;
+  width: 12rem;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .profileImage {
+    width: 15rem;
+  }
+}
+
+/* ===== Social Bar ===== */
+.socialBar {
+  position: absolute;
+  bottom: 0.03rem;
+  left: 75%;
+  z-index: auto;
+  margin-left: -0.20rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  background-color: white;
+  border-radius: 9999px;
+
+  padding: 0.75rem 1rem 0.75rem 5rem;
+
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  white-space: nowrap;
+
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* เปิด Social Bar */
+.socialBarOpen {
+  transform: translateX(0);
+}
+
+/* ปิด Social Bar: เลื่อนหลบมาทางซ้ายโดยเว้นระยะให้ปุ่มลูกศรยังโผล่คาอยู่ที่ขอบ */
+.socialBarClosed {
+  transform: translateX(-190px);
+}
+
+/* ซ่อนไอคอน Social เมื่อปิด แต่คงปุ่มลูกศรไว้ให้กดได้ */
+.socialBarClosed .socialIcon {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ===== Social Icons ===== */
+.socialIcon {
+  display: flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.socialIcon img,
+.socialIcon svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.socialIcon:hover {
+  transform: scale(1.1);
+}
+
+/* ===== Social Toggle Button (ปุ่มลูกศร) ===== */
+.socialToggle {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  width: 2.25rem;
+  height: 2.25rem;
+
+  border: none;
+  background: transparent;
+  color: #8D00AD;
+
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 1;
+
+  cursor: pointer;
+  box-shadow: none;
+
+  transform: translate(0px, -4px);
+  transition: transform 0.2s ease;
+}
+
+.socialToggle:hover {
+  background: transparent;
+  transform: translate(0px, -4px) scale(1.15);
+}
+
+/* ===== Title ===== */
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 3.75rem;
+  }
+}
+
+/* ===== Form Card ===== */
+.formCard {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 36rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+}
+
+.formTitle {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+}
+/* ===== Footer (จัดกึ่งกลางหน้าจอในแนวราบ และชิดล่าง) ===== */
+.footer {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  color: rgba(19, 19, 19, 0.7);
+  z-index: 10;
+  white-space: nowrap;
+}

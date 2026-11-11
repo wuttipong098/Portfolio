@@ -1,36 +1,97 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import profile from "@/public/profile.png";
+import profile1 from "@/public/profile1.png";
 import มพ from "@/public/มพ.webp";
 import styles from "@/styles/main.module.css";
-// import Portfolio3D from "@/app/components/Portfolio3D";
 
 const MainPage = () => {
   const router = useRouter();
 
+  const sequence = [0, 1, 0];
+  const [stepIndex, setStepIndex] = useState(0);
+  const homeRef = useRef(null);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStepIndex(0);
+          let currentStep = 0;
+
+          if (interval) clearInterval(interval);
+          interval = setInterval(() => {
+            currentStep++;
+            if (currentStep < sequence.length) {
+              setStepIndex(currentStep);
+            } else {
+              if (interval) clearInterval(interval);
+            }
+          }, 3500);
+        } else {
+          if (interval) clearInterval(interval);
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    if (homeRef.current) {
+      observer.observe(homeRef.current);
+    }
+
+    return () => {
+      if (homeRef.current) observer.unobserve(homeRef.current);
+      if (interval) clearInterval(interval);
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
-      {/* <Portfolio3D /> */}
-
       <section
+        ref={homeRef}
         id="home"
         className="portfolio-section flex h-screen items-center justify-center px-8"
       >
         <div className="relative z-10 flex w-full max-w-6xl flex-col items-center justify-center gap-8 text-center md:flex-row md:text-left">
           
           <div className="flex flex-1 items-center justify-center">
+            {/* กรอบใสขนาดตายตัว */}
             <div className={styles.glassBox}>
-              <Image
-                src={profile}
-                alt="My profile"
-                width={200}
-                height={200}
-                priority
-                className="h-auto w-40 object-contain md:w-80"
-              />
+              {/* รูปที่ 1: profile */}
+              <div
+                className="absolute inset-0 flex items-center justify-center p-6 transition-opacity duration-700 ease-in-out"
+                style={{ opacity: stepIndex === 0 || stepIndex === 2 ? 1 : 0 }}
+              >
+                <Image
+                  src={profile}
+                  alt="My profile"
+                  width={320}
+                  height={320}
+                  priority
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
+
+              {/* รูปที่ 2: profile1 */}
+              <div
+                className="absolute inset-0 flex items-center justify-center p-6 transition-opacity duration-700 ease-in-out"
+                style={{ opacity: stepIndex === 1 ? 1 : 0 }}
+              >
+                <Image
+                  src={profile1}
+                  alt="My profile 1"
+                  width={320}
+                  height={320}
+                  priority
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
             </div>
           </div>
 
@@ -69,14 +130,16 @@ const MainPage = () => {
 
           <div className="flex flex-1 items-center justify-center">
             <div className={styles.glassBox}>
-              <Image
-                src={มพ}
-                alt="Logo มพ."
-                width={200}
-                height={200}
-                priority
-                className="h-auto w-40 object-contain md:w-52"
-              />
+              <div className="flex h-full w-full items-center justify-center p-6">
+                <Image
+                  src={มพ}
+                  alt="Logo มพ."
+                  width={300}
+                  height={300}
+                  priority
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>
