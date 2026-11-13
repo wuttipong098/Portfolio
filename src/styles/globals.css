@@ -9,10 +9,10 @@ html {
 body {
   background: linear-gradient(
     to bottom,
-    #8D00AD 0%,
-    #A855F7 40%,
-    #D8B4FE 70%,
-    #F5F3FF 100%
+    #7030EF 0%,
+    #DB1FFF 40%,
+    #090820 70%,
+    #ffffff 100%
   ) !important;
   background-attachment: fixed !important;
   color: #171717;
