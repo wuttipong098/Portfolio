@@ -5,6 +5,7 @@ import Image from "next/image";
 import emailjs from "@emailjs/browser";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { validateContactForm } from "@/service/contact";
 import profile from "@/public/profile1.png";
 import styles from "@/styles/contact.module.css";
 
@@ -111,15 +112,35 @@ const CTPage = () => {
     e.preventDefault();
     if (!formRef.current) return;
 
-    // แสดงกล่องยืนยันก่อนส่ง (สไตล์เดียวกับหน้าสมัครสมาชิก)
+    // ตรวจสอบข้อมูลผ่านฟังก์ชัน Validate จาก Service
+    const formData = new FormData(formRef.current);
+    const validation = validateContactForm({
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      message: formData.get("message") as string,
+    });
+
+    // หากตรวจสอบแล้วไม่ผ่าน แสดง SweetAlert เตือนจุดที่ผิดพลาดพร้อมปุ่มสีม่วง
+    if (!validation.isValid) {
+      MySwal.fire({
+        icon: 'warning',
+        title: 'ข้อมูลไม่ครบถ้วนหรือไม่ถูกต้อง',
+        text: validation.errorMessage,
+        confirmButtonColor: '#8D00AD',
+        confirmButtonText: 'ตกลง',
+      });
+      return;
+    }
+
+    // กล่องยืนยันการส่งข้อความ
     MySwal.fire({
       title: "ยืนยันการส่งข้อความ?",
       text: "คุณต้องการส่งข้อความนี้ใช่หรือไม่",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#8D00AD", // ใช้สีม่วงเข้ากับธีมเว็บ
+      confirmButtonColor: "#8D00AD",
       cancelButtonColor: "#d33",
-      confirmButtonText: "ใช่, ส่งเลย!",
+      confirmButtonText: "ใช่ยืนยัน",
       cancelButtonText: "ยกเลิก"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -136,7 +157,6 @@ const CTPage = () => {
             () => {
               setLoading(false);
               formRef.current?.reset();
-              // แจ้งเตือนเมื่อส่งสำเร็จ
               MySwal.fire({
                 icon: 'success',
                 title: 'สำเร็จ!',
@@ -146,7 +166,6 @@ const CTPage = () => {
             },
             (error) => {
               setLoading(false);
-              // แจ้งเตือนเมื่อเกิดข้อผิดพลาด
               MySwal.fire({
                 icon: 'error',
                 title: 'ข้อผิดพลาด',
@@ -228,7 +247,8 @@ const CTPage = () => {
               Send a Message
             </h3>
 
-            <form ref={formRef} onSubmit={sendEmail} className="space-y-5 text-left">
+            {/* เพิ่ม noValidate ตรงนี้เพื่อปิดการเตือน native ของเบราว์เซอร์ */}
+            <form ref={formRef} onSubmit={sendEmail} noValidate className="space-y-5 text-left">
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
                   <input
