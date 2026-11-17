@@ -2,8 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import emailjs from "@emailjs/browser";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import profile from "@/public/profile1.png";
 import styles from "@/styles/contact.module.css";
+
+const MySwal = withReactContent(Swal);
 
 const contactItems = [
   {
@@ -97,7 +102,63 @@ const socialLinks = [
 
 const CTPage = () => {
   const [isSocialOpen, setIsSocialOpen] = useState(false);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const formRef = useRef<HTMLFormElement>(null);
+  const [loading, setLoading] = useState(false);
+
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+
+    // แสดงกล่องยืนยันก่อนส่ง (สไตล์เดียวกับหน้าสมัครสมาชิก)
+    MySwal.fire({
+      title: "ยืนยันการส่งข้อความ?",
+      text: "คุณต้องการส่งข้อความนี้ใช่หรือไม่",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#8D00AD", // ใช้สีม่วงเข้ากับธีมเว็บ
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ใช่, ส่งเลย!",
+      cancelButtonText: "ยกเลิก"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+
+        emailjs
+          .sendForm(
+            "service_r8xzaa5",
+            "template_utct9y2",
+            formRef.current!,
+            "pDrDULrxQ9_He0Y7_"
+          )
+          .then(
+            () => {
+              setLoading(false);
+              formRef.current?.reset();
+              // แจ้งเตือนเมื่อส่งสำเร็จ
+              MySwal.fire({
+                icon: 'success',
+                title: 'สำเร็จ!',
+                text: 'ส่งข้อความเรียบร้อยแล้ว ขอบคุณที่ติดต่อเราครับ',
+                confirmButtonColor: '#8D00AD',
+              });
+            },
+            (error) => {
+              setLoading(false);
+              // แจ้งเตือนเมื่อเกิดข้อผิดพลาด
+              MySwal.fire({
+                icon: 'error',
+                title: 'ข้อผิดพลาด',
+                text: 'ไม่สามารถส่งข้อความได้ กรุณาลองใหม่อีกครั้ง',
+                confirmButtonColor: '#d33',
+              });
+              console.error("EmailJS Error:", error.text);
+            }
+          );
+      }
+    });
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -167,19 +228,23 @@ const CTPage = () => {
               Send a Message
             </h3>
 
-            <form className="space-y-5 text-left">
+            <form ref={formRef} onSubmit={sendEmail} className="space-y-5 text-left">
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
                   <input
                     type="text"
+                    name="name"
                     placeholder="Name"
+                    required
                     className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
                   />
                 </div>
                 <div>
                   <input
                     type="email"
+                    name="email"
                     placeholder="Email"
+                    required
                     className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
                   />
                 </div>
@@ -197,29 +262,29 @@ const CTPage = () => {
 
               <div>
                 <textarea
+                  name="message"
                   placeholder="Your Message..."
                   rows={5}
+                  required
                   className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 resize-none"
                 />
               </div>
 
-              {/* เพิ่มคลาส cursor-pointer ตรงปุ่ม Send Message */}
               <button
                 type="submit"
-                className="w-full cursor-pointer rounded-full bg-white px-8 py-3.5 font-semibold text-[#8D00AD] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                disabled={loading}
+                className="w-full cursor-pointer rounded-full bg-white px-8 py-3.5 font-semibold text-[#8D00AD] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
               >
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
         </section>
       </div>
 
-      {/* ===== Profile + Social + Footer (รวมกันชิดซ้ายล่างสุด) ===== */}
+      {/* ===== Profile + Social + Footer ===== */}
       <div className={styles.profileWrapper} ref={containerRef}>
         <div className={styles.profileContainer}>
-
-          {/* Social Bar */}
           <div
             className={`${styles.socialBar} ${
               isSocialOpen
@@ -241,7 +306,6 @@ const CTPage = () => {
               </a>
             ))}
 
-            {/* Toggle Button at the end of Social Bar */}
             <button
               type="button"
               className={styles.socialToggle}
@@ -251,10 +315,8 @@ const CTPage = () => {
             >
               {isSocialOpen ? "‹" : "›"}
             </button>
-
           </div>
 
-          {/* Profile Image */}
           <Image
             src={profile}
             alt="Wuttipong Krachan"
@@ -263,10 +325,8 @@ const CTPage = () => {
             className={styles.profileImage}
             priority
           />
-
         </div>
 
-        {/* นำข้อความ Footer มาวางไว้ข้างๆ รูปในระดับเดียวกันแบบ absolute เพื่อไม่ให้ดันโครงสร้างหลัก */}
         <p className={styles.footer}>
           © {new Date().getFullYear()} Wuttipong Krachan
         </p>
