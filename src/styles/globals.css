@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 
 html {
@@ -7,15 +8,8 @@ html {
 }
 
 body {
-  background: linear-gradient(
-    to bottom,
-    #7030EF 0%,
-    #DB1FFF 40%,
-    #090820 70%,
-    #ffffff 100%
-  ) !important;
-  background-attachment: fixed !important;
-  color: #171717;
+  background: #02091d !important;
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
   margin: 0;
@@ -25,6 +19,34 @@ body {
   box-sizing: border-box;
 }
 
+/* ===== 3D BACKGROUND ===== */
+
+.background3d {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.background3d canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== WEBSITE CONTENT ===== */
+
+.site-content-layer {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* ===== PORTFOLIO SECTION ===== */
+
 .portfolio-section {
   position: relative;
   min-height: 100vh;
@@ -33,7 +55,8 @@ body {
   overflow: hidden;
 }
 
-/* ล็อกสีตัวอักษรและป้องกันพื้นหลังเปลี่ยนสีตอนเบราว์เซอร์ Autofill */
+/* ===== AUTOFILL ===== */
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

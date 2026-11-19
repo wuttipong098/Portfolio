@@ -55,7 +55,7 @@ const MainPage = () => {
         className="portfolio-section flex h-screen items-center justify-center px-8"
       >
         <div className="relative z-10 flex w-full max-w-6xl flex-col items-center justify-center gap-8 text-center md:flex-row md:text-left">
-          
+
           <div className="flex flex-1 items-center justify-center">
             {/* กรอบใสขนาดตายตัว */}
             <div className={styles.glassBox}>
@@ -104,7 +104,7 @@ const MainPage = () => {
 
       <section className="portfolio-section flex items-center justify-center px-8 py-16">
         <div className="relative z-10 flex w-full max-w-6xl flex-col items-center justify-center gap-10 text-center md:flex-row md:text-left">
-          
+
           <div className="flex-1">
             <h2 className={styles.sectionTitle}>
               Inspiration for creating this website
