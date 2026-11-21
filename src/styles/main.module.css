@@ -9,9 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 350px;
-  height: 350px;
-  border-radius: 2rem;
+  width: 112px;
+  height: 112px;
+  border-radius: 1.15rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
@@ -20,47 +20,114 @@
 }
 
 .mainTitle {
-  font-size: 3rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: white;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .subtitle {
-  margin-top: 1.25rem;
-  font-size: 1.25rem;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
 }
 
 .description {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   max-width: 36rem;
-  font-size: 1rem;
-  line-height: 2rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .sectionTitle {
-  font-size: 1.875rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: white;
-  white-space: nowrap;
+  line-height: 1.25;
+  white-space: normal;
 }
 
 .aboutText {
-  margin-top: 1.5rem;
+  margin-top: 0.55rem;
   max-width: 36rem;
-  font-size: 1rem;
-  line-height: 2rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .aboutText + .aboutText {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
 
-/* รวม @media (min-width: 768px) ไว้ที่เดียวกันด้านล่างสุดเพื่อให้จัดการง่าย */
+/* Small Tablet / Large Mobile */
+@media (min-width: 640px) {
+  .glassBox {
+    width: 170px;
+    height: 170px;
+    border-radius: 1.5rem;
+  }
+
+  .mainTitle {
+    font-size: 1.875rem;
+  }
+
+  .subtitle {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .description,
+  .aboutText {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .sectionTitle {
+    font-size: 1.375rem;
+  }
+}
+
+/* Tablet & Desktop */
 @media (min-width: 768px) {
+  .glassBox {
+    width: 380px;
+    height: 380px;
+    border-radius: 2rem;
+  }
+
+  .mainTitle {
+    font-size: 4rem;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    margin-top: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .description,
+  .aboutText {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 2rem;
+  }
+
+  .aboutText {
+    margin-top: 1.5rem;
+  }
+
+  .aboutText + .aboutText {
+    margin-top: 1.75rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
   .glassBox {
     width: 400px;
     height: 400px;
@@ -70,11 +137,8 @@
     font-size: 4.5rem;
   }
 
-  .subtitle {
-    font-size: 1.5rem;
-  }
-
   .sectionTitle {
     font-size: 2.25rem;
+    white-space: nowrap;
   }
 }
