@@ -7,13 +7,15 @@ import profile1 from "@/public/profile1.png";
 import มพ from "@/public/มพ.webp";
 import styles from "@/styles/main.module.css";
 
+const SEQUENCE = [0, 1, 0];
+
 const MainPage = () => {
-  const sequence = [0, 1, 0];
   const [stepIndex, setStepIndex] = useState(0);
   const homeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
+    const currentHome = homeRef.current;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -24,7 +26,7 @@ const MainPage = () => {
           if (interval) clearInterval(interval);
           interval = setInterval(() => {
             currentStep++;
-            if (currentStep < sequence.length) {
+            if (currentStep < SEQUENCE.length) {
               setStepIndex(currentStep);
             } else {
               if (interval) clearInterval(interval);
@@ -37,31 +39,30 @@ const MainPage = () => {
       { threshold: 0.4 }
     );
 
-    if (homeRef.current) {
-      observer.observe(homeRef.current);
+    if (currentHome) {
+      observer.observe(currentHome);
     }
 
     return () => {
-      if (homeRef.current) observer.unobserve(homeRef.current);
+      if (currentHome) observer.unobserve(currentHome);
       if (interval) clearInterval(interval);
     };
   }, []);
 
   return (
     <div className={styles.container}>
+      {/* Hero Section: รูปซ้าย - ข้อความขวา ทั้งบนมือถือและบนคอม */}
       <section
         ref={homeRef}
         id="home"
-        className="portfolio-section flex h-screen items-center justify-center px-8"
+        className="portfolio-section flex min-h-0! md:min-h-screen! items-center justify-center px-3 sm:px-8 pt-20 pb-5 md:py-16"
       >
-        <div className="relative z-10 flex w-full max-w-6xl flex-col items-center justify-center gap-8 text-center md:flex-row md:text-left">
-
-          <div className="flex flex-1 items-center justify-center">
-            {/* กรอบใสขนาดตายตัว */}
+        <div className="relative z-10 flex w-full max-w-6xl flex-row items-center justify-between gap-3 sm:gap-8 md:gap-12 text-left">
+          <div className="flex shrink-0 items-center justify-center">
             <div className={styles.glassBox}>
               {/* รูปที่ 1: profile */}
               <div
-                className="absolute inset-0 flex items-center justify-center p-6 transition-opacity duration-700 ease-in-out"
+                className="absolute inset-0 flex items-center justify-center p-2 sm:p-5 md:p-6 transition-opacity duration-700 ease-in-out"
                 style={{ opacity: stepIndex === 0 || stepIndex === 2 ? 1 : 0 }}
               >
                 <Image
@@ -76,7 +77,7 @@ const MainPage = () => {
 
               {/* รูปที่ 2: profile1 */}
               <div
-                className="absolute inset-0 flex items-center justify-center p-6 transition-opacity duration-700 ease-in-out"
+                className="absolute inset-0 flex items-center justify-center p-2 sm:p-5 md:p-6 transition-opacity duration-700 ease-in-out"
                 style={{ opacity: stepIndex === 1 ? 1 : 0 }}
               >
                 <Image
@@ -91,30 +92,32 @@ const MainPage = () => {
             </div>
           </div>
 
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <h1 className={styles.mainTitle}>Wuttipong Krachan</h1>
             <p className={styles.subtitle}>Full-Stack Developer</p>
             <p className={styles.description}>
               Welcome to my portfolio. Feel free to explore my projects, skills,
-              education, and experience. You can scroll through to view the content or select a specific section!
+              education, and experience. You can scroll through to view the
+              content or select a specific section!
             </p>
           </div>
         </div>
       </section>
 
-      <section className="portfolio-section flex items-center justify-center px-8 py-16">
-        <div className="relative z-10 flex w-full max-w-6xl flex-col items-center justify-center gap-10 text-center md:flex-row md:text-left">
-
-          <div className="flex-1">
+      {/* About / Inspiration Section: ข้อความซ้าย - รูปขวา ทั้งบนมือถือและบนคอม */}
+      <section className="portfolio-section flex min-h-0! md:min-h-auto! items-center justify-center px-3 sm:px-8 pt-5 pb-8 md:py-20">
+        <div className="relative z-10 flex w-full max-w-6xl flex-row items-center justify-between gap-3 sm:gap-8 md:gap-12 text-left">
+          <div className="min-w-0 flex-1">
             <h2 className={styles.sectionTitle}>
               Inspiration for creating this website
             </h2>
 
             <p className={styles.aboutText}>
-              I&apos;m a recent graduate with a strong passion for software development.
-              Through internships and personal projects, I’ve gained experience
-              working in teams in a Work From Home environment as a Full-Stack
-              Developer — handling both frontend web design and backend development.
+              I&apos;m a recent graduate with a strong passion for software
+              development. Through internships and personal projects, I’ve gained
+              experience working in teams in a Work From Home environment as a
+              Full-Stack Developer — handling both frontend web design and
+              backend development.
             </p>
 
             <p className={styles.aboutText}>
@@ -124,9 +127,9 @@ const MainPage = () => {
             </p>
           </div>
 
-          <div className="flex flex-1 items-center justify-center">
+          <div className="flex shrink-0 items-center justify-center">
             <div className={styles.glassBox}>
-              <div className="flex h-full w-full items-center justify-center p-6">
+              <div className="flex h-full w-full items-center justify-center p-2 sm:p-5 md:p-6">
                 <Image
                   src={มพ}
                   alt="Logo มพ."
